@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Building2, Home, Mountain } from "lucide-react";
 import logo from "@/assets/suncity-logo.webp";
+import buildingHero from "@/assets/building-hero.png";
 
 const Hero = () => {
   const scrollToContact = () => {
@@ -9,9 +10,15 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background with overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-luxury-dark via-background to-luxury-dark">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(236,149,28,0.1),transparent_50%)]" />
+      {/* Background with building image and overlay */}
+      <div className="absolute inset-0">
+        <img 
+          src={buildingHero} 
+          alt="Suncity Monarch Building" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-luxury-dark/95 via-background/90 to-luxury-dark/95" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(236,149,28,0.15),transparent_50%)]" />
       </div>
 
       {/* Navigation */}
