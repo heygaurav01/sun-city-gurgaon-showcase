@@ -28,7 +28,7 @@ const Location = () => {
 
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           {locationAdvantages.map((location, index) => (
-            <div 
+            <div
               key={index}
               className="flex items-start gap-4 p-6 rounded-xl bg-card/30 backdrop-blur-sm border border-border/30 hover:border-primary/50 hover:bg-card/50 transition-smooth group"
             >
@@ -49,12 +49,18 @@ const Location = () => {
         </div>
 
         {/* Map placeholder - you can integrate Google Maps here */}
-        <div className="w-full h-96 rounded-2xl bg-card/30 border border-border/30 flex items-center justify-center">
-          <div className="text-center">
-            <MapPin className="w-12 h-12 text-primary mx-auto mb-4" />
-            <p className="text-foreground/60">Map view integration coming soon</p>
-            <p className="text-sm text-foreground/40 mt-2">Prime Location: Sector 78, Gurgaon</p>
-          </div>
+        {/* Google Maps Integration */}
+        <div className="w-full h-96 rounded-2xl overflow-hidden border border-border/30 shadow-luxury">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3510.337774490815!2d76.97020037628916!3d28.37886427580422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4a533b5882ca6e17%3A0x9a3ebf6e647a30a2!2sSuncity%20Monarch!5e0!3m2!1sen!2sin!4v1764323134711!5m2!1sen!2sin"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Suncity Monarch Location"
+          />
         </div>
       </div>
     </section>

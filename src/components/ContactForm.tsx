@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,6 +8,7 @@ import { toast } from "sonner";
 import { Phone, Mail, MapPin } from "lucide-react";
 
 const ContactForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,25 +17,60 @@ const ContactForm = () => {
     consent: false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.consent) {
       toast.error("Please accept the terms and conditions");
       return;
     }
 
-    // Here you would typically send the data to your backend
-    toast.success("Thank you! We'll contact you soon.");
-    
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-      consent: false,
-    });
+    if (formData.phone.length !== 10) {
+      toast.error("Please enter a valid 10-digit phone number");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://api.elaris.ltd/api/request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
+      toast.success("Thank you! We'll contact you soon.");
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+        consent: false,
+      });
+
+      // Redirect to Thank You page
+      navigate("/thank-you.html");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,7 +97,7 @@ const ContactForm = () => {
                   </div>
                   <div>
                     <div className="text-sm text-foreground/60 mb-1">Phone</div>
-                    <div className="text-foreground font-medium">+91 (Available on Request)</div>
+                    <div className="text-foreground font-medium">+91 8200 201 202</div>
                   </div>
                 </div>
 
@@ -70,7 +107,7 @@ const ContactForm = () => {
                   </div>
                   <div>
                     <div className="text-sm text-foreground/60 mb-1">Email</div>
-                    <div className="text-foreground font-medium">info@suncityprojects.com</div>
+                    <div className="text-foreground font-medium">contact@elaris.consulting</div>
                   </div>
                 </div>
 
@@ -122,7 +159,10 @@ const ContactForm = () => {
                   type="tel"
                   placeholder="Phone Number *"
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "").slice(0, 10);
+                    setFormData({ ...formData, phone: value });
+                  }}
                   required
                   className="bg-background/50 border-border/50 focus:border-primary transition-smooth"
                 />
@@ -142,26 +182,27 @@ const ContactForm = () => {
                 <Checkbox
                   id="consent"
                   checked={formData.consent}
-                  onCheckedChange={(checked) => 
+                  onCheckedChange={(checked) =>
                     setFormData({ ...formData, consent: checked as boolean })
                   }
                   className="mt-1"
                 />
-                <label 
-                  htmlFor="consent" 
+                <label
+                  htmlFor="consent"
                   className="text-sm text-foreground/70 leading-relaxed cursor-pointer"
                 >
-                  I authorize company representatives to Call, SMS, Email or WhatsApp me about 
+                  I authorize company representatives to Call, SMS, Email or WhatsApp me about
                   its products and offers. This consent overrides any registration for DNC/NDNC.
                 </label>
               </div>
 
-              <Button 
+              <Button
                 type="submit"
                 size="lg"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base transition-smooth shadow-luxury"
+                disabled={isSubmitting}
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base transition-smooth shadow-luxury disabled:opacity-70"
               >
-                Enquire Now
+                {isSubmitting ? "Submitting..." : "Enquire Now"}
               </Button>
             </form>
           </div>
