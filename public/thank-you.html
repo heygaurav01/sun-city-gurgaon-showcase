@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank You</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .card {
+        max-width: 420px;
+        width: 100%;
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 24px;
+        padding: 40px 32px;
+        text-align: center;
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(16px);
+      }
+      .icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 24px;
+        border-radius: 50%;
+        background: rgba(236, 149, 28, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon svg {
+        width: 32px;
+        height: 32px;
+        fill: #ec951c;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 32px;
+        font-family: "Playfair Display", Georgia, serif;
+      }
+      p {
+        margin: 0 0 30px;
+        color: rgba(226, 232, 240, 0.72);
+        line-height: 1.6;
+        font-size: 18px;
+      }
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 16px 20px;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        background: #ec951c;
+        color: #0f172a;
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+      a:hover {
+        background: #d78112;
+        transform: translateY(-1px);
+      }
+      @media (max-width: 480px) {
+        .card {
+          padding: 32px 24px;
+        }
+        h1 {
+          font-size: 28px;
+        }
+        p {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"
+          ></path>
+        </svg>
+      </div>
+      <h1>Thank You!</h1>
+      <p>Your enquiry has been submitted successfully. Our team will reach out shortly.</p>
+      <a href="/">Back to Home</a>
+    </div>
+  </body>
+</html>
+

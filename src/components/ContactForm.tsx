@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { Phone, Mail, MapPin } from "lucide-react";
+import { submitFormData } from "@/lib/api";
 
 const ContactForm = () => {
   const navigate = useNavigate();
@@ -35,24 +36,21 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://api.elaris.ltd/api/request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
-        }),
+      const trimmedMessage = formData.message.trim();
+      const result = await submitFormData({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        countryCode: "+91",
+        message: trimmedMessage ? trimmedMessage : undefined,
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
+      if (!result.success) {
+        toast.error(result.message);
+        return;
       }
 
-      toast.success("Thank you! We'll contact you soon.");
+      toast.success(result.message);
 
       // Reset form
       setFormData({

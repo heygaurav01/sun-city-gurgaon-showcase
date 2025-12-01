@@ -1,19 +1,23 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Building2, Home, Mountain, Phone, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import logo from "@/assets/suncity-logo.webp";
 import buildingHero from "@/assets/building-hero.png";
+import { submitFormData } from "@/lib/api";
 
 const Hero = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.name || !formData.phone) {
@@ -21,17 +25,37 @@ const Hero = () => {
       return;
     }
 
-    toast.success("Thank you! We'll contact you soon.");
+    setIsSubmitting(true);
 
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-    });
+    try {
+      const result = await submitFormData({
+        name: formData.name.trim(),
+        phone: formData.phone.trim(),
+        email: formData.email.trim(),
+        countryCode: "+91",
+      });
+
+      if (result.success) {
+        toast.success(result.message);
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+        });
+        navigate("/thank-you.html");
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error("Hero form submission failed:", error);
+      toast.error("Failed to submit form. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -50,14 +74,18 @@ const Hero = () => {
       {/* Navigation */}
       <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-6">
         <div className="max-w-[95%] ml-0 flex items-center justify-between">
-          <img src={logo} alt="Suncity Projects" className="h-12 md:h-16 object-contain" />
+          <img
+            src={logo}
+            alt="Suncity Projects"
+            className="h-12 md:h-16 object-contain"
+          />
           <div className="flex items-center gap-4">
             <a
               href="tel:+918200201202"
               className="hidden md:flex items-center gap-2 bg-white/90 backdrop-blur-sm text-foreground px-4 py-2 rounded-md font-medium hover:bg-white transition-smooth border border-border/50 shadow-sm"
             >
-              <Phone className="w-4 h-4" />
-              <span>+91 8200 201 202</span>
+              <Phone className="w-4 h-4 text-black" />
+              <span className="text-black">+91 8200 201 202</span>
             </a>
             <a
               href="https://api.whatsapp.com/send/?phone=918200201202&text&type=phone_number&app_absent=0"
@@ -91,7 +119,9 @@ const Hero = () => {
             <div className="flex flex-wrap justify-start gap-4 md:gap-6 mb-8 text-foreground/90">
               <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-3 rounded-lg border border-border/50">
                 <Home className="w-5 h-5 text-primary" />
-                <span className="text-sm md:text-base">3 & 4 BHK Apartments</span>
+                <span className="text-sm md:text-base">
+                  3 & 4 BHK Apartments
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-3 rounded-lg border border-border/50">
                 <Mountain className="w-5 h-5 text-primary" />
@@ -105,19 +135,31 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row items-center justify-start gap-4 mb-8">
               <div className="text-left">
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">50+</div>
-                <div className="text-sm md:text-base text-foreground/80">Luxury Amenities</div>
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">
+                  50+
+                </div>
+                <div className="text-sm md:text-base text-foreground/80">
+                  Luxury Amenities
+                </div>
               </div>
               <div className="hidden sm:block h-12 w-px bg-border" />
               <div className="text-left">
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">₹3.60 Cr</div>
-                <div className="text-sm md:text-base text-foreground/80">Onwards</div>
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">
+                  ₹3.60 Cr
+                </div>
+                <div className="text-sm md:text-base text-foreground/80">
+                  Onwards
+                </div>
               </div>
             </div>
 
             <div className="hidden lg:flex flex-col sm:flex-row gap-4">
               <Button
-                onClick={() => document.getElementById('overview')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() =>
+                  document
+                    .getElementById("overview")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
                 size="lg"
                 variant="outline"
                 className="border-primary/50 text-foreground hover:bg-primary/10 font-semibold text-base px-8 py-6 transition-smooth"
@@ -131,7 +173,8 @@ const Hero = () => {
           <div className="relative">
             <div className="bg-card/95 backdrop-blur-md border border-border/50 rounded-2xl p-6 md:p-8 shadow-luxury">
               <h3 className="text-2xl md:text-3xl font-serif mb-6 text-center">
-                Register for <span className="text-primary">Exclusive Offers</span>
+                Register for{" "}
+                <span className="text-primary">Exclusive Offers</span>
               </h3>
 
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -139,7 +182,9 @@ const Hero = () => {
                   <Input
                     placeholder="Name *"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     required
                     className="bg-background/50 border-border/50 focus:border-primary transition-smooth h-12"
                   />
@@ -150,7 +195,12 @@ const Hero = () => {
                     type="tel"
                     placeholder="Mobile No *"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => {
+                      const value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+                      setFormData({ ...formData, phone: value });
+                    }}
                     required
                     className="bg-background/50 border-border/50 focus:border-primary transition-smooth h-12"
                   />
@@ -161,7 +211,9 @@ const Hero = () => {
                     type="email"
                     placeholder="E-Mail Address (Optional)"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="bg-background/50 border-border/50 focus:border-primary transition-smooth h-12"
                   />
                 </div>
@@ -169,13 +221,15 @@ const Hero = () => {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={isSubmitting}
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base transition-smooth shadow-luxury h-12"
                 >
-                  Register Now
+                  {isSubmitting ? "Submitting..." : "Register Now"}
                 </Button>
 
                 <p className="text-xs text-foreground/60 text-center leading-relaxed">
-                  I authorize company representatives to call, SMS, email or WhatsApp me about its products and offers.
+                  I authorize company representatives to call, SMS, email or
+                  WhatsApp me about its products and offers.
                 </p>
               </form>
 
