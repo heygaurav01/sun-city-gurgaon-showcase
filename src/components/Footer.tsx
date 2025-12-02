@@ -64,7 +64,7 @@ const Footer = () => {
           <div className="flex flex-wrap gap-2 text-xs text-foreground/60">
             <span>Project Rera: Upcoming Launch-Rera Awaited</span>
             <span>|</span>
-            <span>AGENT RERA No.: GGM/284/2017/IR/514/Ext1/2023/21/1</span>
+            <span>PROJECT RERA No.: RERA-GRG-271-2019 https://haryanarera.gov.in/</span>
           </div>
 
           <p className="text-xs text-foreground/50 leading-relaxed">
@@ -77,6 +77,14 @@ const Footer = () => {
 
           <div className="flex flex-wrap justify-between items-center gap-4 pt-4 text-xs text-foreground/50">
             <p>© 2025 Suncity Projects. All rights reserved.</p>
+            <a
+              href="/Disclaimer.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-smooth"
+            >
+              Disclaimer & Privacy Policy
+            </a>
           </div>
         </div>
       </div>

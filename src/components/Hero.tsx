@@ -228,15 +228,12 @@ const Hero = () => {
                 </Button>
 
                 <p className="text-xs text-foreground/60 text-center leading-relaxed">
-                  I authorize company representatives to call, SMS, email or
-                  WhatsApp me about its products and offers.
+
                 </p>
               </form>
 
               <div className="mt-6 pt-6 border-t border-border/30 text-center">
-                <p className="text-sm text-foreground/70">
-                  Channel Partner RERA No: GGM/284/2017/IR/514/Ext1/2023/21/1
-                </p>
+
               </div>
             </div>
           </div>

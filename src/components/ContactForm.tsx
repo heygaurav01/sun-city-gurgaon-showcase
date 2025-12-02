@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { toast } from "sonner";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { submitFormData } from "@/lib/api";
@@ -15,7 +15,7 @@ const ContactForm = () => {
     email: "",
     phone: "",
     message: "",
-    consent: false,
+
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,10 +23,7 @@ const ContactForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.consent) {
-      toast.error("Please accept the terms and conditions");
-      return;
-    }
+
 
     if (formData.phone.length !== 10) {
       toast.error("Please enter a valid 10-digit phone number");
@@ -58,7 +55,7 @@ const ContactForm = () => {
         email: "",
         phone: "",
         message: "",
-        consent: false,
+
       });
 
       // Redirect to Thank You page
@@ -121,13 +118,11 @@ const ContactForm = () => {
               </div>
             </div>
 
+
             <div className="p-6 rounded-xl bg-primary/5 border border-primary/20">
-              <p className="text-sm text-foreground/70">
-                Channel Partner RERA No: GGM/284/2017/IR/514/Ext1/2023/21/1
-              </p>
+
             </div>
           </div>
-
           {/* Contact Form */}
           <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-card">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -176,23 +171,7 @@ const ContactForm = () => {
                 />
               </div>
 
-              <div className="flex items-start gap-3">
-                <Checkbox
-                  id="consent"
-                  checked={formData.consent}
-                  onCheckedChange={(checked) =>
-                    setFormData({ ...formData, consent: checked as boolean })
-                  }
-                  className="mt-1"
-                />
-                <label
-                  htmlFor="consent"
-                  className="text-sm text-foreground/70 leading-relaxed cursor-pointer"
-                >
-                  I authorize company representatives to Call, SMS, Email or WhatsApp me about
-                  its products and offers. This consent overrides any registration for DNC/NDNC.
-                </label>
-              </div>
+
 
               <Button
                 type="submit"
